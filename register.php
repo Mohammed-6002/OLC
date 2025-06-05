@@ -13,7 +13,7 @@ const USER_EXIST_ERROR = 'Het emailadres is al gebruikt';
 if (empty($_POST['email'])) {
     $errors['email'] = EMAIL_ERROR;
 } else {
-    $inputs['email'] = filter_INPUT($_POST['email'], FILTER_VALIDATE_EMAIL);
+$inputs['email'] = filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
     if ($inputs['email'] === false) {
         $errors['email'] = 'Invalid email format.';
     }
@@ -38,18 +38,18 @@ if (empty($_POST['lastname'])) {
 }
 
 if (count($errors) === 0) {
-    $stm = $db->prepare('SELECT email FROM users WHERE email = :email');
+    $stm = $db->prepare('SELECT email FROM user WHERE email = :email');
     $stm->bindParam(':email', $inputs['email']);
     $stm->execute();
     $user = $stm->fetch(PDO::FETCH_ASSOC);
 
     if (!$user) {
-        $stm = $db->prepare('INSERT INTO users (email, password, firstname, lastname) VALUES (:email, :password, :firstname, :lastname)');
+        $stm = $db->prepare('INSERT INTO user (email, password, first_name, last_name) VALUES (:email, :password, :first_name, :last_name)');
         $passwordHash = password_hash($inputs['password'], PASSWORD_DEFAULT);
         $stm->bindParam(':email', $inputs['email']);
         $stm->bindParam(':password', $passwordHash);
-        $stm->bindParam(':firstname', $inputs['firstname']);
-        $stm->bindParam(':lastname', $inputs['lastname']);
+        $stm->bindParam(':first_name', $inputs['firstname']);
+        $stm->bindParam(':last_name', $inputs['lastname']);
         $stm->execute();
         echo "Registration successful.";
     } else {
@@ -67,15 +67,6 @@ if (count($errors) === 0) {
 </head>
 <body>
     <h1>Register</h1>
-    <?php
-    if (!empty($errors)) {
-        echo '<ul style="color: red;">';
-        foreach ($errors as $error) {
-            echo "<li>" . htmlspecialchars($error) . "</li>";
-        }
-        echo '</ul>';
-    }
-    ?>
     <form action="register.php" method="POST">
         <label for="email">Email:</label><br />
         <input type="email" id="email" name="email" value="<?php echo $inputs['email'] ?? ''; ?>">
@@ -94,5 +85,6 @@ if (count($errors) === 0) {
         <div><?php echo $errors['lastname'] ?? ''; ?></div>
 
         <button type="submit">Register</button>
+    </form>
 </body>
 </html>

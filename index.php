@@ -21,7 +21,7 @@ if (isset($_SESSION['login']) && isset($_SESSION['email'])) {
 </head>
 <body>
     <?php if ($user): ?>
-        <p>Welkom <?php echo htmlspecialchars($user['firstname']) . ' ' . htmlspecialchars($user['lastname']); ?></p>
+        <p>Welkom <?php echo htmlspecialchars($user['first_name']) . ' ' . htmlspecialchars($user['last_name']); ?></p>
     <?php else: ?>
         <p>U bent niet ingelogd.</p>
     <?php endif; ?>
