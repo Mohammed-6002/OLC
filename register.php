@@ -51,7 +51,8 @@ if (count($errors) === 0) {
         $stm->bindParam(':first_name', $inputs['firstname']);
         $stm->bindParam(':last_name', $inputs['lastname']);
         $stm->execute();
-        echo "Registration successful.";
+        header('Location: login.php');
+        exit;
     } else {
         $errors['user'] = USER_EXIST_ERROR;
     }
@@ -64,27 +65,97 @@ if (count($errors) === 0) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Register</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7f8;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+        form {
+            background: #fff;
+            padding: 25px 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            width: 320px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #555;
+        }
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+        input[type="email"]:focus,
+        input[type="password"]:focus,
+        input[type="text"]:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        div {
+            color: #d9534f;
+            font-size: 13px;
+            margin-top: -12px;
+            margin-bottom: 12px;
+            min-height: 18px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Register</h1>
-    <form action="register.php" method="POST">
-        <label for="email">Email:</label><br />
-        <input type="email" id="email" name="email" value="<?php echo $inputs['email'] ?? ''; ?>">
-        <div><?php echo $errors['email'] ?? ''; ?></div>
+    <div class="container">
+        <h1>Register</h1>
+        <form action="register.php" method="POST">
+            <label for="email">Email:</label><br />
+            <input type="email" id="email" name="email" value="<?php echo $inputs['email'] ?? ''; ?>">
+            <div><?php echo $errors['email'] ?? ''; ?></div>
 
-        <label for="password">Password:</label><br />
-        <input type="password" id="password" name="password">
-        <div><?php echo $errors['password'] ?? ''; ?></div>
+            <label for="password">Password:</label><br />
+            <input type="password" id="password" name="password">
+            <div><?php echo $errors['password'] ?? ''; ?></div>
 
-        <label for="firstname">First Name:</label><br />
-        <input type="text" id="firstname" name="firstname"  value="<?php echo $inputs['firstname'] ?? ''; ?>">
-        <div><?php echo $errors['firstname'] ?? ''; ?></div>
+            <label for="firstname">First Name:</label><br />
+            <input type="text" id="firstname" name="firstname"  value="<?php echo $inputs['firstname'] ?? ''; ?>">
+            <div><?php echo $errors['firstname'] ?? ''; ?></div>
 
-        <label for="lastname">Last Name:</label><br />
-        <input type="text" id="lastname" name="lastname" value="<?php echo $inputs['lastname'] ?? ''; ?>">
-        <div><?php echo $errors['lastname'] ?? ''; ?></div>
+            <label for="lastname">Last Name:</label><br />
+            <input type="text" id="lastname" name="lastname" value="<?php echo $inputs['lastname'] ?? ''; ?>">
+            <div><?php echo $errors['lastname'] ?? ''; ?></div>
 
-        <button type="submit">Register</button>
-    </form>
+            <button type="submit">Register</button>
+        </form>
+    </div>
 </body>
 </html>
